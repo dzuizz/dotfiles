@@ -32,5 +32,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- init config files ---
 create_symlink $HOME/.zshrc $SCRIPT_DIR/zshrc/zshrc-macos.sh
-create_symlink $HOME/.config/kitty/kitty.conf $SCRIPT_DIR/kitty/kitty.conf
+create_symlink $HOME/.config/kitty $SCRIPT_DIR/kitty
 create_symlink $HOME/.config/nvim $SCRIPT_DIR/nvim
+create_symlink $HOME/.config/fastfetch $SCRIPT_DIR/fastfetch
+create_symlink $HOME/.config/yabai $SCRIPT_DIR/yabai
+# create_symlink $HOME/scripts $SCRIPT_DIR/scripts
+
+# gcc setup
+ln -s /opt/homebrew/Cellar/gcc/15.2.0/bin/gcc-15 /opt/homebrew/bin/gcc
+# ln -s /opt/homebrew/Cellar/gcc/15.2.0/bin/g++-15 /opt/homebrew/bin/gcc
