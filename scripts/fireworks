@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+# inspired by https://www.asciiart.eu/animations/ascii-fireworks
+
+import math
+import random
+import shutil
+import signal
+import sys
+import time
+
+FPS = 60
+GRAVITY = 0.045
+DRAG = 0.985
+LAUNCH_CHANCE = 0.08
+TRAIL = "|:.`"
+SPARKS = "@*+oxoo:.. "
+PALETTES = [
+    [196, 202, 208, 214, 220],  # fire
+    [201, 207, 213, 219, 225],  # pink
+    [21, 27, 39, 51, 87],  # blue
+    [46, 82, 118, 154, 190],  # green-gold
+    [129, 135, 141, 147, 183],  # violet
+    [226, 227, 228, 229, 230],  # gold-white
+]
+
+
+def color(c, s):
+    return f"\033[38;5;{c}m{s}\033[0m"
+
+
+class Rocket:
+    def __init__(self, w, h):
+        self.x = random.uniform(w * 0.15, w * 0.85)
+        self.y = h - 1
+        self.vy = -random.uniform(0.7, 1.1) * (h / 24)
+        self.peak = random.uniform(h * 0.08, h * 0.45)
+        self.palette = random.choice(PALETTES)
+        self.age = 0
+
+    def step(self):
+        self.y += self.vy
+        self.vy += GRAVITY
+        self.age += 1
+        return self.vy >= -0.15 or self.y <= self.peak
+
+    def draw(self, buf, w, h):
+        xi, yi = int(self.x), int(self.y)
+        if 0 <= yi < h and 0 <= xi < w:
+            buf[yi][xi] = color(self.palette[-1], TRAIL[min(self.age, len(TRAIL) - 1)])
+
+
+class Spark:
+    def __init__(self, x, y, palette):
+        ang = random.uniform(0, 2 * 3.14159265)
+        spd = random.uniform(0.3, 1.6)
+        self.x, self.y = x, y
+        self.vx = spd * math.cos(ang)
+        self.vy = spd * math.sin(ang) * 0.6  # squash: chars are tall
+        self.life = random.randint(int(FPS * 0.7), int(FPS * 1.6))
+        self.max = self.life
+        self.palette = palette
+
+    def step(self):
+        self.x += self.vx
+        self.y += self.vy
+        self.vx *= DRAG
+        self.vy = self.vy * DRAG + GRAVITY
+        self.life -= 1
+        return self.life > 0
+
+    def draw(self, buf, w, h):
+        xi, yi = int(self.x), int(self.y)
+        if 0 <= yi < h and 0 <= xi < w:
+            frac = self.life / self.max
+            glyph = SPARKS[int((1 - frac) * (len(SPARKS) - 1))]
+            if glyph != " ":
+                hue = self.palette[
+                    min(len(self.palette) - 1, int((1 - frac) * len(self.palette)))
+                ]
+                buf[yi][xi] = color(hue, glyph)
+
+
+def main():
+    out = sys.stdout
+    out.write("\033[?1049h\033[?25l")  # alt screen + hide cursor
+    out.flush()
+
+    def restore(*_):
+        out.write("\033[?25h\033[?1049l")  # show cursor + leave alt screen
+        out.flush()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, restore)
+    signal.signal(signal.SIGTERM, restore)
+
+    rockets, sparks = [], []
+    frame = 1.0 / FPS
+    try:
+        while True:
+            w, h = shutil.get_terminal_size((80, 24))
+            buf = [[" "] * w for _ in range(h)]
+
+            if random.random() < LAUNCH_CHANCE or not (rockets or sparks):
+                rockets.append(Rocket(w, h))
+
+            still = []
+            for r in rockets:
+                if r.step():  # exploded
+                    n = random.randint(28, 55)
+                    sparks += [Spark(r.x, r.y, r.palette) for _ in range(n)]
+                else:
+                    r.draw(buf, w, h)
+                    still.append(r)
+            rockets = still
+
+            sparks = [s for s in sparks if s.step()]
+            for s in sparks:
+                s.draw(buf, w, h)
+
+            out.write("\033[H" + "\n".join("".join(row) for row in buf))
+            out.flush()
+            time.sleep(frame)
+    except Exception:
+        restore()
+
+
+if __name__ == "__main__":
+    main()
