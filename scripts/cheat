@@ -1,0 +1,276 @@
+#!/usr/bin/env bash
+# supported: tmux, nvim, kitty, strftime
+
+set -euo pipefail
+
+cheat_tmux() {
+  cat <<'EOF'
+SESSIONS|C-b d|detach from session
+SESSIONS|C-b s|list / switch sessions
+SESSIONS|C-b $|rename current session
+SESSIONS|C-b (|previous session
+SESSIONS|C-b )|next session
+SESSIONS|C-b L|last (most recent) session
+WINDOWS|C-b c|new window
+WINDOWS|C-b ,|rename window
+WINDOWS|C-b &|kill window
+WINDOWS|C-b n|next window
+WINDOWS|C-b p|previous window
+WINDOWS|C-b w|list / pick window
+WINDOWS|C-b 0-9|select window by number
+WINDOWS|C-b f|find window by text
+WINDOWS|C-b .|move window (renumber)
+PANES|C-b %|split pane left/right
+PANES|C-b "|split pane top/bottom
+PANES|C-b o|cycle to next pane
+PANES|C-b ;|go to last active pane
+PANES|C-b arrows|move between panes
+PANES|C-b z|toggle pane zoom (fullscreen)
+PANES|C-b x|kill pane
+PANES|C-b {|swap pane with previous
+PANES|C-b }|swap pane with next
+PANES|C-b Space|cycle layouts
+PANES|C-b !|break pane into its own window
+PANES|C-b q|show pane numbers
+PANES|C-b C-h/j/k/l|resize pane (-r, hold to repeat)
+COPY|C-b [|enter copy / scroll mode
+COPY|C-b ]|paste most recent buffer
+COPY|C-b PgUp|enter copy mode and page up
+COPY|Space|(in copy) start selection
+COPY|Enter|(in copy) copy selection and exit
+COPY|q|(in copy) quit copy mode
+MISC|C-b ?|list all key bindings
+MISC|C-b :|command prompt
+MISC|C-b t|show clock
+MISC|C-b r|source-file (only if you bind it)
+EOF
+}
+
+cheat_nvim() {
+  cat <<'EOF'
+NOTE|leader|<space> is your leader key
+FILES|<leader><space>|find files (project root)
+FILES|<leader>ff|find files
+FILES|<leader>fr|recent files
+FILES|<leader>fb|open buffers
+FILES|<leader>fn|new file
+FILES|<leader>e|toggle file explorer
+SEARCH|<leader>/|live grep (project)
+SEARCH|<leader>sw|grep word under cursor
+SEARCH|<leader>sk|search keymaps
+SEARCH|<leader>sh|search help pages
+SEARCH|<leader>ss|goto symbol in file
+SEARCH|<esc>|clear search highlight
+BUFFERS|<S-h>|previous buffer
+BUFFERS|<S-l>|next buffer
+BUFFERS|[b / ]b|prev / next buffer
+BUFFERS|<leader>bd|delete buffer
+BUFFERS|<leader>bo|delete other buffers
+BUFFERS|<leader>`|switch to other buffer
+WINDOWS|<C-w>s|split window below
+WINDOWS|<C-w>v|split window right
+WINDOWS|<C-h/j/k/l>|navigate to window
+WINDOWS|<C-arrows>|resize window
+WINDOWS|<leader>wd|close window
+CODE|gd|goto definition
+CODE|gr|find references
+CODE|gI|goto implementation
+CODE|gy|goto type definition
+CODE|K|hover documentation
+CODE|<leader>ca|code action
+CODE|<leader>cr|rename symbol
+CODE|<leader>cf|format buffer
+CODE|gcc|toggle comment (line)
+CODE|gc|toggle comment (visual/motion)
+DIAGNOSTICS|<leader>cd|line diagnostics
+DIAGNOSTICS|]d / [d|next / prev diagnostic
+DIAGNOSTICS|<leader>xx|diagnostics list (Trouble)
+DIAGNOSTICS|<leader>cs|symbols outline
+GIT|<leader>gg|open LazyGit (custom)
+GIT|<leader>gb|git blame line
+GIT|<leader>gB|open file in browser
+GIT|]h / [h|next / prev hunk
+GIT|<leader>ghs|stage hunk
+GIT|<leader>ghr|reset hunk
+TERMINAL|<C-/>|toggle terminal
+TERMINAL|<leader>ft|terminal (project root)
+CONVENIENCE|<leader>w|write file (custom)
+CONVENIENCE|<leader>q|quit window (custom)
+CONVENIENCE|<leader>qq|quit all
+CONVENIENCE|<leader>l|open Lazy plugin manager
+EOF
+}
+
+cheat_kitty() {
+  cat <<'EOF'
+NOTE|kitty_mod|default modifier is ctrl+shift
+TABS|ctrl+shift+t|new tab
+TABS|ctrl+shift+q|close tab
+TABS|ctrl+shift+right|next tab
+TABS|ctrl+shift+left|previous tab
+TABS|ctrl+shift+. / ,|move tab forward / back
+TABS|ctrl+shift+alt+t|set tab title
+TABS|ctrl+shift+1-9|go to tab by number
+WINDOWS|ctrl+shift+enter|new window (split)
+WINDOWS|ctrl+shift+w|close window
+WINDOWS|ctrl+shift+] / [|next / prev window
+WINDOWS|ctrl+shift+f|move window forward
+WINDOWS|ctrl+shift+`|move window to top
+WINDOWS|ctrl+shift+l|next layout
+WINDOWS|ctrl+shift+r|start resizing window
+SCROLLBACK|ctrl+shift+up/down|scroll one line
+SCROLLBACK|ctrl+shift+pgup/pgdn|scroll one page
+SCROLLBACK|ctrl+shift+home/end|scroll to top / bottom
+SCROLLBACK|ctrl+shift+h|browse scrollback in pager
+SCROLLBACK|ctrl+shift+g|browse last command output
+FONT|ctrl+shift+plus|increase font size
+FONT|ctrl+shift+minus|decrease font size
+FONT|ctrl+shift+backspace|reset font size
+CLIPBOARD|ctrl+shift+c|copy to clipboard
+CLIPBOARD|ctrl+shift+v|paste from clipboard
+CLIPBOARD|ctrl+shift+s|paste from selection
+CLIPBOARD|ctrl+shift+o|pass selection to program
+MISC|ctrl+shift+e|open URLs via hints
+MISC|ctrl+shift+u|unicode character input
+MISC|ctrl+shift+escape|open kitty shell
+MISC|ctrl+shift+f2|edit kitty.conf
+MISC|ctrl+shift+f5|reload kitty.conf
+MISC|ctrl+shift+delete|clear terminal + scrollback
+MACOS|cmd+t / cmd+n|new tab / new OS window
+MACOS|cmd+w|close tab
+MACOS|cmd+1-9|go to tab by number
+MACOS|cmd+c / cmd+v|copy / paste
+MACOS|cmd+plus / minus / 0|font bigger / smaller / reset
+MACOS|cmd+ctrl+f|toggle fullscreen
+EOF
+}
+
+cheat_strftime() {
+  cat <<'EOF'
+YEAR|%Y|Year with century (e.g., 2026)
+YEAR|%y|Year without century (00..99)
+MONTH|%B|Full month name (e.g., January)
+MONTH|%b|Abbreviated month name (e.g., Jan)
+MONTH|%m|Month as a zero-padded decimal (01..12)
+DAY|%d|Day of month, zero-padded (01..31)
+DAY|%e|Day of month, space-padded ( 1..31)
+DAY|%j|Day of year, zero-padded (001..366)
+WEEKDAY|%A|Full weekday name (e.g., Sunday)
+WEEKDAY|%a|Abbreviated weekday name (e.g., Sun)
+WEEKDAY|%w|Weekday as decimal (0..6, Sunday is 0)
+WEEKDAY|%u|Weekday as decimal (1..7, Monday is 1)
+WEEK|%V|ISO 8601 week number (01..53)
+WEEK|%U|Week number, Sunday first (00..53)
+WEEK|%W|Week number, Monday first (00..53)
+TIME|%H|Hour, 24-hour clock (00..23)
+TIME|%I|Hour, 12-hour clock (01..12)
+TIME|%M|Minute (00..59)
+TIME|%S|Second (00..60)
+TIME|%p|AM or PM designation
+TIME|%P|am or pm designation
+TIMEZONE|%z|Time zone offset from UTC (e.g., +0800)
+TIMEZONE|%Z|Time zone name or abbreviation (e.g., UTC)
+SHORTCUT|%F|ISO Date format (YYYY-MM-DD)
+SHORTCUT|%T|Time format (HH:MM:SS)
+SHORTCUT|%D|Date format (MM/DD/YY)
+SHORTCUT|%R|Time format 24-hour (HH:MM)
+SHORTCUT|%r|Time format 12-hour (hh:mm:ss AM/PM)
+SHORTCUT|%s|Seconds since Epoch (Unix timestamp)
+SHORTCUT|%c|Locale's standard date and time
+LITERAL|%%|A literal '%' character
+EOF
+}
+
+TOOLS=(tmux nvim kitty strftime)
+
+list_tools() {
+  printf '%s\n' "${TOOLS[@]}"
+}
+
+render() {
+  awk -F'|' '
+    BEGIN { c="\033[36m"; y="\033[33m"; r="\033[0m" }
+    {
+      g=sprintf("%-12s", $1)
+      k=sprintf("%-22s", $2)
+      printf "%s\t%s%s%s %s%s%s %s\n", $2, c, g, r, y, k, r, $3
+    }'
+}
+
+browse() {
+  local tool=$1
+  local data
+  data="$("cheat_${tool}")"
+
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "$data" | render | cut -f2-
+    return
+  fi
+
+  local picked
+  picked="$(
+    echo "$data" | render | fzf \
+      --ansi \
+      --no-sort \
+      --delimiter='\t' \
+      --with-nth=2.. \
+      --prompt="${tool} ❯ " \
+      --header="fuzzy-search keybinds · <enter> copies the key sequence" \
+      --height=80% --layout=reverse --border --info=inline
+  )" || return 0
+
+  local keys
+  keys="$(printf '%s' "$picked" | cut -f1)"
+  [ -z "$keys" ] && return 0
+
+  if command -v pbcopy >/dev/null 2>&1; then
+    printf '%s' "$keys" | pbcopy
+    echo "copied: $keys"
+  else
+    echo "$keys"
+  fi
+}
+
+pick_tool() {
+  if command -v fzf >/dev/null 2>&1; then
+    list_tools | fzf --prompt="cheat ❯ " --height=40% --layout=reverse --border --info=inline
+  else
+    echo "usage: cheat <${TOOLS[*]// /|}>" >&2
+    return 1
+  fi
+}
+
+main() {
+  local tool="${1:-}"
+
+  case "$tool" in
+  -l | --list)
+    list_tools
+    return 0
+    ;;
+  -h | --help | "")
+    if [ "$tool" = "" ]; then
+      tool="$(pick_tool)" || return 1
+      [ -z "$tool" ] && return 0
+    else
+      sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
+      return 0
+    fi
+    ;;
+  esac
+
+  local valid=
+  local t
+  for t in "${TOOLS[@]}"; do
+    [ "$t" = "$tool" ] && valid=1 && break
+  done
+  if [ -z "$valid" ]; then
+    echo "cheat: unknown tool '$tool'" >&2
+    echo "available: ${TOOLS[*]}" >&2
+    return 1
+  fi
+
+  browse "$tool"
+}
+
+main "$@"
