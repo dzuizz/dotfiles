@@ -1,20 +1,18 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# powerlevel10k
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# --- zinit ---
+# zinit
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+[ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname "$ZINIT_HOME")"
+[ ! -d "$ZINIT_HOME/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-# --- powerlevel10k ---
+# powerlevel10k config
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# --- zsh plugins ---
+# zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
@@ -48,21 +46,14 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':fzf-tab:complete:*' fzf-preview 'bat --color=always --line-range :50 {}'
 
-# --- eza ---
+# eza
 if command -v eza &>/dev/null; then
-    alias ls='eza --icons=auto --group-directories-first'
-    alias l='eza -l --icons=auto --group-directories-first'
-    alias ll='eza -la --icons=auto --sort=name --group-directories-first'
-    alias lt='eza --tree --level=2 --icons=auto'
-    alias ld='eza -lD --icons=auto'
+    alias ls='eza -l --icons=auto --group-directories-first'
 else
-    alias ls='ls --color=auto'
-    alias l='ls -lh'
-    alias ll='ls -lha'
-    alias ld='ls -lhd */'
+    alias ls='ls -lh --color=auto'
 fi
 
-# --- fzf ---
+# fzf
 if command -v fzf &>/dev/null; then
     export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
     export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --preview-window=right:60%'
@@ -71,9 +62,12 @@ if command -v fzf &>/dev/null; then
     export FZF_ALT_C_OPTS="--preview 'eza --tree {} | head -200'"
 fi
 
+# scripts
+if [ -d "$HOME/scripts" ]; then
+  PATH="$HOME/scripts:$PATH"
+fi
+
 # aliases
-eval "$(zoxide init zsh)"
-alias cd="z"
 alias g++="g++-15"
 
 # shell integrations
@@ -82,3 +76,11 @@ eval "$(fzf --zsh)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# PATH
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.wakatime:$PATH"
+
+eval "$(terminal-wakatime init)"
+
+export _ZO_DOCTOR=0
+eval "$(zoxide init zsh --cmd cd)"
