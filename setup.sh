@@ -36,7 +36,8 @@ create_symlink $HOME/.config/kitty $SCRIPT_DIR/kitty
 create_symlink $HOME/.config/nvim $SCRIPT_DIR/nvim
 create_symlink $HOME/.config/fastfetch $SCRIPT_DIR/fastfetch
 create_symlink $HOME/.config/yabai $SCRIPT_DIR/yabai
-# create_symlink $HOME/scripts $SCRIPT_DIR/scripts
+create_symlink $HOME/.config/tmux $SCRIPT_DIR/tmux
+create_symlink $HOME/scripts $SCRIPT_DIR/scripts
 
 # gcc setup
 ln -s /opt/homebrew/Cellar/gcc/15.2.0/bin/gcc-15 /opt/homebrew/bin/gcc
