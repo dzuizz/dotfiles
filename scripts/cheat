@@ -20,6 +20,13 @@ WINDOWS|C-b w|list / pick window
 WINDOWS|C-b 0-9|select window by number
 WINDOWS|C-b f|find window by text
 WINDOWS|C-b .|move window (renumber)
+WINDOWS|C-b '|prompt for window index to select
+WINDOWS|C-b l|select previously current window
+WINDOWS|C-b i|display window information
+WINDOWS|C-b <|display window menu
+WINDOWS|C-b M-n|next window with an alert
+WINDOWS|C-b M-p|previous window with an alert
+WINDOWS|C-b ~|show messages
 PANES|C-b %|split pane left/right
 PANES|C-b "|split pane top/bottom
 PANES|C-b o|cycle to next pane
@@ -33,14 +40,41 @@ PANES|C-b Space|cycle layouts
 PANES|C-b !|break pane into its own window
 PANES|C-b q|show pane numbers
 PANES|C-b C-h/j/k/l|resize pane (-r, hold to repeat)
+PANES|C-b >|display pane menu
+PANES|C-b E|spread panes out evenly
+PANES|C-b m|toggle the marked pane
+PANES|C-b M|clear the marked pane
+PANES|C-b C-o|rotate through the panes
+PANES|C-b M-o|rotate through panes in reverse
+PANES|C-b M-arrows|resize pane by 5
+LAYOUTS|C-b M-1|even-horizontal layout
+LAYOUTS|C-b M-2|even-vertical layout
+LAYOUTS|C-b M-3|main-horizontal layout
+LAYOUTS|C-b M-4|main-vertical layout
+LAYOUTS|C-b M-5|tiled layout
+LAYOUTS|C-b M-6|main-horizontal-mirrored layout
+LAYOUTS|C-b M-7|main-vertical-mirrored layout
 COPY|C-b [|enter copy / scroll mode
 COPY|C-b ]|paste most recent buffer
 COPY|C-b PgUp|enter copy mode and page up
 COPY|Space|(in copy) start selection
 COPY|Enter|(in copy) copy selection and exit
 COPY|q|(in copy) quit copy mode
+COPY|C-b DC|reset visible window to follow cursor
+COPY|C-b S-Up|move visible part of window up
+COPY|C-b S-Down|move visible part of window down
+COPY|C-b S-Left|move visible part of window left
+COPY|C-b S-Right|move visible part of window right
+BUFFERS|C-b #|list all paste buffers
+BUFFERS|C-b -|delete most recent paste buffer
+BUFFERS|C-b =|choose a paste buffer from a list
+CLIENT|C-b D|choose and detach a client from a list
+CLIENT|C-b C-z|suspend the current client
+CLIENT|C-b C-b|send the prefix key
 MISC|C-b ?|list all key bindings
 MISC|C-b :|command prompt
+MISC|C-b /|describe key binding
+MISC|C-b C|customize options
 MISC|C-b t|show clock
 MISC|C-b r|source-file (only if you bind it)
 EOF
