@@ -1,4 +1,5 @@
-# --- functions ---
+set -euo pipeline
+
 create_symlink() {
   local TARGET_PATH=$1
   local SOURCE_PATH=$2
@@ -28,13 +29,13 @@ brew_init() {
   brew untap homebrew/cask-fonts
 }
 
+# MAIN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- init config files ---
 create_symlink $HOME/.zshrc $SCRIPT_DIR/zshrc/zshrc-macos.sh
 create_symlink $HOME/.config/kitty $SCRIPT_DIR/kitty
 create_symlink $HOME/.config/nvim $SCRIPT_DIR/nvim
-create_symlink $HOME/.config/fastfetch $SCRIPT_DIR/fastfetch
 create_symlink $HOME/.config/yabai $SCRIPT_DIR/yabai
 create_symlink $HOME/.config/tmux $SCRIPT_DIR/tmux
 create_symlink $HOME/scripts $SCRIPT_DIR/scripts
