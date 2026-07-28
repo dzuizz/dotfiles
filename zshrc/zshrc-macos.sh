@@ -1,4 +1,4 @@
-# powerlevel10k
+# TODO: make dynamic by detecting powerlevel10k
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -68,7 +68,7 @@ if [ -d "$HOME/scripts" ]; then
 fi
 
 # aliases
-alias g++="g++-15"
+alias g++="g++-16" # TODO: detect gcc vers
 
 # shell integrations
 eval "$(fzf --zsh)"
