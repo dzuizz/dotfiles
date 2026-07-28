@@ -32,13 +32,14 @@ brew_init() {
 # MAIN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# --- init config files ---
+# link config by folder ~ada: "linking entire config folder didn't work and is unsafe if i want to add unconventional configs"
 create_symlink $HOME/.zshrc $SCRIPT_DIR/zshrc/zshrc-macos.sh
 create_symlink $HOME/.config/kitty $SCRIPT_DIR/kitty
-create_symlink $HOME/.config/nvim $SCRIPT_DIR/nvim
+create_symlink $HOME/.config/nvim  $SCRIPT_DIR/nvim
 create_symlink $HOME/.config/yabai $SCRIPT_DIR/yabai
-create_symlink $HOME/.config/tmux $SCRIPT_DIR/tmux
-create_symlink $HOME/scripts $SCRIPT_DIR/scripts
+create_symlink $HOME/.config/skhd  $SCRIPT_DIR/skhd
+create_symlink $HOME/.config/tmux  $SCRIPT_DIR/tmux
+create_symlink $HOME/scripts       $SCRIPT_DIR/scripts
 
 # TODO: make dynamic by detecting gcc vers
 ln -s /opt/homebrew/Cellar/gcc/16.1.0/bin/gcc-16 /opt/homebrew/bin/gcc
