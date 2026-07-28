@@ -40,6 +40,5 @@ create_symlink $HOME/.config/yabai $SCRIPT_DIR/yabai
 create_symlink $HOME/.config/tmux $SCRIPT_DIR/tmux
 create_symlink $HOME/scripts $SCRIPT_DIR/scripts
 
-# gcc setup
-ln -s /opt/homebrew/Cellar/gcc/15.2.0/bin/gcc-15 /opt/homebrew/bin/gcc
-# ln -s /opt/homebrew/Cellar/gcc/15.2.0/bin/g++-15 /opt/homebrew/bin/gcc
+# TODO: make dynamic by detecting gcc vers
+ln -s /opt/homebrew/Cellar/gcc/16.1.0/bin/gcc-16 /opt/homebrew/bin/gcc
