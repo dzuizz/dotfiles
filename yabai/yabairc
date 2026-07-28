@@ -24,6 +24,5 @@ yabai -m config focus_follows_mouse off
 
 # exceptions
 yabai -m rule --add app="^System Settings$" manage=off
-yabai -m rule --add app="^Music$" manage=off
 yabai -m rule --add app="^Finder$" title="^(Copy|Move|Info|Get Info)$" manage=off
 yabai -m rule --add app="^(Calculator|App Store)$" manage=off
